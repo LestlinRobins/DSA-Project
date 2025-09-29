@@ -1,9 +1,10 @@
 # backend/main.py
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from typing import List
 import random
 from datetime import datetime, timedelta
+import yfinance as yf
 
 app = FastAPI()
 
@@ -117,38 +118,221 @@ companies = {
   "601398.SS": "Industrial and Commercial Bank of China Limited"
 }
 
-# Generate mock stock data
-def generate_stock_data(symbol: str):
-    base_price = 100 + random.random() * 200
-    change = (random.random() - 0.5) * 10
-    change_percent = (change / base_price) * 100
+# Format large numbers for display
+def format_number(value):
+    if value is None:
+        return "N/A"
+    
+    if value >= 1_000_000_000_000:  # Trillions
+        return f"${value / 1_000_000_000_000:.2f}T"
+    elif value >= 1_000_000_000:  # Billions
+        return f"${value / 1_000_000_000:.2f}B"
+    elif value >= 1_000_000:  # Millions
+        return f"${value / 1_000_000:.2f}M"
+    elif value >= 1_000:  # Thousands
+        return f"${value / 1_000:.2f}K"
+    else:
+        return f"${value:.2f}"
 
+def format_volume(value):
+    if value is None:
+        return "N/A"
+    
+    if value >= 1_000_000_000:  # Billions
+        return f"{value / 1_000_000_000:.2f}B"
+    elif value >= 1_000_000:  # Millions
+        return f"{value / 1_000_000:.2f}M"
+    elif value >= 1_000:  # Thousands
+        return f"{value / 1_000:.2f}K"
+    else:
+        return f"{value:,}"
+
+# Generate real-time stock data
+def generate_stock_data(symbol: str):
+    # Using yfinance to get real stock data
+    try:
+        ticker = yf.Ticker(symbol)
+        info = ticker.info
+        
+        # Get the most recent trading day data
+        hist = ticker.history(period="5d")  # Get more days to ensure we have data
+        if hist.empty:
+            raise ValueError("No historical data found")
+        
+        # Get latest available price data
+        base_price = float(hist['Close'].iloc[-1])
+        previous_price = float(hist['Close'].iloc[-2]) if len(hist) > 1 else base_price
+        change = base_price - previous_price
+        change_percent = (change / previous_price * 100) if previous_price != 0 else 0
+        
+        # Get live volume (most recent trading day)
+        volume = int(hist['Volume'].iloc[-1])
+        
+        # Get live market cap with multiple fallback options
+        market_cap = None
+        if 'marketCap' in info and info['marketCap']:
+            market_cap = info['marketCap']
+        elif 'sharesOutstanding' in info and info['sharesOutstanding']:
+            # Calculate market cap = shares outstanding * current price
+            shares_outstanding = info['sharesOutstanding']
+            market_cap = shares_outstanding * base_price
+        
+        # Get additional live data
+        avg_volume = info.get('averageVolume', volume)  # 10-day average volume
+        avg_volume_10days = info.get('averageVolume10days', avg_volume)
+        
+        # Get live trading session data if available
+        regular_market_volume = info.get('regularMarketVolume', volume)
+        regular_market_price = info.get('regularMarketPrice', base_price)
+        
+        # Use the most current data available
+        current_volume = regular_market_volume if regular_market_volume else volume
+        current_price = regular_market_price if regular_market_price else base_price
+        
+        print(f"Successfully fetched live data for {symbol}:")
+        print(f"  Price: ${current_price:.2f}")
+        print(f"  Volume: {format_volume(current_volume)}")
+        print(f"  Market Cap: {format_number(market_cap)}")
+        print(f"  Change: ${change:.2f} ({change_percent:.2f}%)")
+        print(f"  Average Volume: {format_volume(avg_volume)}")
+        
+    except Exception as e:
+        print(f"Error fetching stock data for {symbol}: {e}")
+        return {
+            "symbol": symbol,
+            "company_name": companies.get(symbol, f"{symbol} Inc."),
+            "current_price": None,
+            "change": None,
+            "change_percent": None,
+            "volume": None,
+            "market_cap": None,
+            "avg_volume": None,
+        }
     return {
         "symbol": symbol,
         "company_name": companies.get(symbol, f"{symbol} Inc."),
-        "current_price": base_price,
+        "current_price": current_price,
         "change": change,
         "change_percent": change_percent,
-        "volume": random.randint(1_000_000, 10_000_000),
-        "market_cap": base_price * random.random() * 1_000_000_000,
+        "volume": current_volume,
+        "market_cap": market_cap,
+        "avg_volume": avg_volume,
+        "avg_volume_10days": avg_volume_10days,
+        "previous_close": previous_price,
+        "high_52week": info.get('fiftyTwoWeekHigh'),
+        "low_52week": info.get('fiftyTwoWeekLow'),
+        "day_high": info.get('dayHigh', info.get('regularMarketDayHigh')),
+        "day_low": info.get('dayLow', info.get('regularMarketDayLow')),
+        "pe_ratio": info.get('trailingPE'),
+        "dividend_yield": info.get('dividendYield'),
+        "beta": info.get('beta'),
+        "currency": info.get('currency', 'USD'),
+        "exchange": info.get('exchange'),
+        "market_state": info.get('marketState', 'CLOSED'),
     }
 
-# Generate mock chart data
-def generate_chart_data():
+# Get multiple stocks data efficiently
+def get_multiple_stocks_data(symbols: list, max_workers: int = 5):
+    """
+    Get live data for multiple stocks concurrently
+    """
+    from concurrent.futures import ThreadPoolExecutor
+    import time
+    
+    start_time = time.time()
+    print(f"Fetching live data for {len(symbols)} stocks...")
+    
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        results = list(executor.map(generate_stock_data, symbols))
+    
+    end_time = time.time()
+    print(f"Fetched data for {len(symbols)} stocks in {end_time - start_time:.2f} seconds")
+    
+    return results
+
+# Generate chart data
+def generate_chart_data(symbol: str):
     data = []
-    price = 100 + random.random() * 100
-    for i in range(90):
-        date = datetime.now() - timedelta(days=(90 - i))
-        price += (random.random() - 0.5) * 5
-        data.append({
-            "date": date.strftime("%Y-%m-%d"),
-            "open": round(price + (random.random() - 0.5) * 2, 2),
-            "close": round(price, 2),
-            "high": round(price + random.random() * 3, 2),
-            "low": round(price - random.random() * 3, 2),
-        })
+    try:
+        ticker = yf.Ticker(symbol)
+        hist = ticker.history(period="90d")
+        if hist.empty:
+            raise ValueError("No data found")
+        for date, row in hist.iterrows():
+            data.append({
+                "date": date.strftime("%Y-%m-%d"),
+                "open": round(row['Open'], 2),
+                "close": round(row['Close'], 2),
+                "high": round(row['High'], 2),
+                "low": round(row['Low'], 2),
+            })
+    except Exception as e:
+        print(f"Error fetching chart data: {e}")
     return data
 
+# Enhanced live market data endpoints
+@app.get("/api/live-market-data/{symbol}")
+async def get_live_market_data(symbol: str):
+    """
+    Get comprehensive live market data including market cap and volume
+    """
+    try:
+        symbol = symbol.upper()
+        stock_data = generate_stock_data(symbol)
+        
+        if stock_data["current_price"] is None:
+            raise HTTPException(status_code=404, detail=f"Stock data not found for symbol: {symbol}")
+        
+        # Add formatted display values
+        stock_data["formatted_market_cap"] = format_number(stock_data["market_cap"])
+        stock_data["formatted_volume"] = format_volume(stock_data["volume"])
+        stock_data["formatted_avg_volume"] = format_volume(stock_data["avg_volume"])
+        
+        return {
+            "success": True,
+            "data": stock_data,
+            "timestamp": datetime.now().isoformat(),
+            "source": "yfinance_live"
+        }
+        
+    except Exception as e:
+        print(f"Error in live market data endpoint: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/multiple-stocks/{symbols}")
+async def get_multiple_live_data(symbols: str):
+    """
+    Get live data for multiple stocks (comma-separated symbols)
+    Example: /api/multiple-stocks/AAPL,GOOGL,MSFT,TSLA
+    """
+    try:
+        symbol_list = [s.strip().upper() for s in symbols.split(',')]
+        
+        if len(symbol_list) > 20:  # Limit to prevent overload
+            raise HTTPException(status_code=400, detail="Maximum 20 stocks allowed per request")
+        
+        stocks_data = get_multiple_stocks_data(symbol_list)
+        
+        # Add formatted values for each stock
+        for stock in stocks_data:
+            if stock["current_price"]:
+                stock["formatted_market_cap"] = format_number(stock["market_cap"])
+                stock["formatted_volume"] = format_volume(stock["volume"])
+                stock["formatted_avg_volume"] = format_volume(stock["avg_volume"])
+        
+        return {
+            "success": True,
+            "data": stocks_data,
+            "count": len(stocks_data),
+            "timestamp": datetime.now().isoformat(),
+            "source": "yfinance_live"
+        }
+        
+    except Exception as e:
+        print(f"Error in multiple stocks endpoint: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+# Original endpoints
 # Search endpoint
 @app.get("/search")
 def search(query: str):
@@ -164,5 +348,5 @@ def search(query: str):
 @app.get("/stock/{symbol}")
 def get_stock(symbol: str):
     stock_data = generate_stock_data(symbol)
-    chart_data = generate_chart_data()
+    chart_data = generate_chart_data(symbol)
     return {"stock_data": stock_data, "chart_data": chart_data}
