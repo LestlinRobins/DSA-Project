@@ -1,0 +1,1188 @@
+/* Desktop App Layout */
+.desktop-app {
+  display: flex;
+  height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Global Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Sidebar Styles */
+.sidebar {
+  width: 280px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-right: 1px solid rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.app-logo {
+  padding: 2rem 1.5rem;
+  text-align: center;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.app-logo h2 {
+  margin: 0;
+  color: #2c3e50;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.app-logo p {
+  margin: 0.5rem 0 0 0;
+  color: #7f8c8d;
+  font-size: 0.9rem;
+}
+
+/* Tab Navigation */
+.tab-navigation {
+  flex: 1;
+  padding: 1rem 0;
+}
+
+.tab-item {
+  width: 100%;
+  padding: 1rem 1.5rem;
+  border: none;
+  background: none;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: #2c3e50;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.tab-item:hover {
+  background: rgba(52, 152, 219, 0.1);
+  color: #3498db;
+}
+
+.tab-item.active {
+  background: linear-gradient(135deg, #3498db, #2980b9);
+  color: white;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.tab-item span {
+  flex: 1;
+  text-align: left;
+}
+
+/* Sidebar Footer */
+.sidebar-footer {
+  padding: 1.5rem;
+  text-align: center;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-footer p {
+  margin: 0;
+  color: #7f8c8d;
+  font-size: 0.85rem;
+  font-style: italic;
+}
+
+/* Main Content Area */
+.main-content {
+  flex: 1;
+  background: white;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.content-header {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  padding: 2rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.content-header h1 {
+  margin: 0;
+  color: #2c3e50;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.content-body {
+  flex: 1;
+  padding: 2rem;
+  overflow-y: auto;
+}
+
+/* Tab Descriptions */
+.tab-description {
+  color: #7f8c8d;
+  margin-bottom: 2rem;
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+/* Search Tab Styles */
+.search-section {
+  margin-bottom: 2rem;
+}
+
+.search-input-container {
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.search-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #bdc3c7;
+}
+
+.search-input {
+  width: 100%;
+  padding: 1rem 1rem 1rem 3rem;
+  border: 2px solid #ecf0f1;
+  border-radius: 12px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+/* Search Results */
+.search-results {
+  background: white;
+  border: 1px solid #ecf0f1;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  margin-top: 0.5rem;
+}
+
+.search-result-item {
+  padding: 1rem 1.5rem;
+  cursor: pointer;
+  border-bottom: 1px solid #ecf0f1;
+  transition: background 0.2s ease;
+}
+
+.search-result-item:hover {
+  background: rgba(52, 152, 219, 0.05);
+}
+
+.search-result-item:last-child {
+  border-bottom: none;
+}
+
+.company-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.company-info strong {
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+.company-info span {
+  color: #7f8c8d;
+  font-size: 0.9rem;
+}
+
+/* Stock Display */
+.stock-display-section {
+  margin-top: 2rem;
+}
+
+.stock-info-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 2rem;
+  border-radius: 16px;
+  margin-bottom: 2rem;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.stock-header h3 {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.stock-header h4 {
+  margin: 0.5rem 0 0 0;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 400;
+}
+
+.price-info {
+  margin: 1.5rem 0;
+}
+
+.current-price {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.price {
+  font-size: 2.5rem;
+  font-weight: 700;
+}
+
+.change {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+.change.positive {
+  background: rgba(46, 204, 113, 0.2);
+  color: #2ecc71;
+}
+
+.change.negative {
+  background: rgba(231, 76, 60, 0.2);
+  color: #e74c3c;
+}
+
+.stock-metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.metric {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.metric label {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.9rem;
+}
+
+.metric span {
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+/* Volatility Button */
+.volatility-button-container {
+  margin-top: 1.5rem;
+}
+
+.volatility-button {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.volatility-button:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+/* Chart Section */
+.chart-section {
+  background: white;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.chart-section h3 {
+  margin: 0 0 1rem 0;
+  color: #2c3e50;
+  font-size: 1.5rem;
+}
+
+.chart-placeholder {
+  background: rgba(52, 152, 219, 0.05);
+  border: 2px dashed #3498db;
+  border-radius: 12px;
+  padding: 3rem;
+  text-align: center;
+  color: #3498db;
+}
+
+.simple-chart {
+  display: flex;
+  align-items: end;
+  gap: 4px;
+  height: 100px;
+  margin-top: 1rem;
+  justify-content: center;
+}
+
+.chart-bar {
+  background: linear-gradient(to top, #3498db, #2980b9);
+  width: 20px;
+  min-height: 10px;
+  border-radius: 2px;
+}
+
+/* Loading States */
+.loading-state {
+  text-align: center;
+  padding: 3rem;
+  color: #7f8c8d;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(52, 152, 219, 0.1);
+  border-left: 4px solid #3498db;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 1rem;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.spinning {
+  animation: spin 1s linear infinite;
+}
+
+/* No Symbol Message */
+.no-symbol-message,
+.no-stock-message {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: #7f8c8d;
+}
+
+.no-symbol-message .icon,
+.no-stock-message .icon {
+  color: #bdc3c7;
+  margin-bottom: 1rem;
+}
+
+.no-symbol-message h3,
+.no-stock-message h3 {
+  color: #2c3e50;
+  margin: 1rem 0;
+}
+
+.instruction-steps {
+  background: rgba(52, 152, 219, 0.05);
+  padding: 1.5rem;
+  border-radius: 12px;
+  margin-top: 1.5rem;
+  text-align: left;
+}
+
+.instruction-steps ol {
+  margin: 0.5rem 0 0 0;
+  padding-left: 1.5rem;
+}
+
+.instruction-steps li {
+  margin: 0.5rem 0;
+  color: #34495e;
+}
+
+/* Volatility Tab Styles */
+.time-range-selector {
+  margin-bottom: 2rem;
+}
+
+.time-range-selector label {
+  color: #2c3e50;
+  font-weight: 600;
+  margin-right: 1rem;
+}
+
+.range-buttons {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.range-button {
+  padding: 0.5rem 1rem;
+  border: 2px solid #ecf0f1;
+  background: white;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.range-button:hover {
+  border-color: #3498db;
+  color: #3498db;
+}
+
+.range-button.active {
+  background: #3498db;
+  border-color: #3498db;
+  color: white;
+}
+
+/* Volatility Display */
+.volatility-summary {
+  margin-bottom: 2rem;
+}
+
+.volatility-card {
+  background: linear-gradient(135deg, #e74c3c, #c0392b);
+  color: white;
+  padding: 2rem;
+  border-radius: 16px;
+  text-align: center;
+}
+
+.volatility-card h3 {
+  margin: 0 0 1rem 0;
+  font-size: 1.8rem;
+}
+
+.volatility-metric {
+  margin: 1rem 0;
+}
+
+.volatility-value {
+  display: block;
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.volatility-label {
+  display: block;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1rem;
+}
+
+.risk-level {
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  margin-top: 1rem;
+}
+
+.risk-level.high {
+  background: rgba(231, 76, 60, 0.2);
+  color: #e74c3c;
+}
+
+.risk-level.medium {
+  background: rgba(243, 156, 18, 0.2);
+  color: #f39c12;
+}
+
+.risk-level.low {
+  background: rgba(46, 204, 113, 0.2);
+  color: #2ecc71;
+}
+
+/* Volatility Chart */
+.dummy-volatility-chart {
+  background: white;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+
+.volatility-bars {
+  display: flex;
+  align-items: end;
+  gap: 8px;
+  height: 150px;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.volatility-bar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.bar {
+  width: 20px;
+  min-height: 10px;
+  border-radius: 2px 2px 0 0;
+}
+
+.bar-value {
+  font-size: 0.7rem;
+  margin-top: 0.25rem;
+  color: #7f8c8d;
+}
+
+/* Volatility Metrics */
+.volatility-metrics h4 {
+  color: #2c3e50;
+  margin-bottom: 1rem;
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.metric-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  border: 2px solid rgba(52, 152, 219, 0.1);
+}
+
+.metric-card label {
+  display: block;
+  color: #7f8c8d;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.metric-card span {
+  color: #2c3e50;
+  font-weight: 600;
+  font-size: 1.2rem;
+}
+
+.trend {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #2ecc71;
+}
+
+/* Gainers/Losers Tab */
+.gainers-losers-tab .tab-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+}
+
+.refresh-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: #3498db;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.refresh-button:hover:not(:disabled) {
+  background: #2980b9;
+  transform: translateY(-2px);
+}
+
+.refresh-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* View Toggle */
+.view-toggle {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.toggle-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border: 2px solid #ecf0f1;
+  background: white;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.toggle-button:hover {
+  border-color: #3498db;
+  color: #3498db;
+}
+
+.toggle-button.active {
+  background: #3498db;
+  border-color: #3498db;
+  color: white;
+}
+
+/* Stocks List */
+.stocks-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.stock-rank-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: white;
+  padding: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
+.stock-rank-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+.rank {
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: #3498db;
+  min-width: 2rem;
+}
+
+.stock-item {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.stock-info {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.stock-symbol {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 200px;
+}
+
+.stock-symbol strong {
+  color: #2c3e50;
+  font-size: 1.1rem;
+}
+
+.company-name {
+  color: #7f8c8d;
+  font-size: 0.9rem;
+}
+
+.stock-price {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  min-width: 100px;
+}
+
+.current-price {
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #2c3e50;
+}
+
+.stock-change {
+  text-align: right;
+}
+
+.change-value {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.change-value.positive {
+  color: #2ecc71;
+}
+
+.change-value.negative {
+  color: #e74c3c;
+}
+
+.volume {
+  color: #7f8c8d;
+  font-size: 0.85rem;
+}
+
+/* Market Summary */
+.market-summary {
+  background: white;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  margin-top: 2rem;
+}
+
+.market-summary h4 {
+  color: #2c3e50;
+  margin-bottom: 1rem;
+}
+
+.summary-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+}
+
+.stat-card {
+  text-align: center;
+  padding: 1rem;
+  border-radius: 12px;
+  border: 2px solid;
+}
+
+.stat-card.positive {
+  background: rgba(46, 204, 113, 0.05);
+  border-color: rgba(46, 204, 113, 0.2);
+  color: #2ecc71;
+}
+
+.stat-card.negative {
+  background: rgba(231, 76, 60, 0.05);
+  border-color: rgba(231, 76, 60, 0.2);
+  color: #e74c3c;
+}
+
+.stat-card.neutral {
+  background: rgba(52, 152, 219, 0.05);
+  border-color: rgba(52, 152, 219, 0.2);
+  color: #3498db;
+}
+
+.stat-card label {
+  display: block;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  opacity: 0.8;
+}
+
+.stat-card span {
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+
+/* Predictions Tab */
+.model-selector {
+  margin-bottom: 2rem;
+}
+
+.model-selector label {
+  color: #2c3e50;
+  font-weight: 600;
+  margin-right: 1rem;
+}
+
+.model-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.model-button {
+  padding: 0.75rem 1.5rem;
+  border: 2px solid #ecf0f1;
+  background: white;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.model-button:hover {
+  border-color: #3498db;
+  color: #3498db;
+}
+
+.model-button.active {
+  background: #3498db;
+  border-color: #3498db;
+  color: white;
+}
+
+/* Current Stock Info */
+.current-stock-info {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.current-stock-info h3 {
+  margin: 0 0 1rem 0;
+  font-size: 1.5rem;
+}
+
+.current-price span {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+/* Predictions Grid */
+.predictions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.prediction-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  border-left: 4px solid;
+}
+
+.prediction-card.up {
+  border-left-color: #2ecc71;
+}
+
+.prediction-card.down {
+  border-left-color: #e74c3c;
+}
+
+.prediction-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.prediction-header h4 {
+  margin: 0;
+  color: #2c3e50;
+}
+
+.direction-indicator.up {
+  color: #2ecc71;
+}
+
+.direction-indicator.down {
+  color: #e74c3c;
+}
+
+.prediction-price {
+  margin-bottom: 1rem;
+}
+
+.predicted-price {
+  display: block;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2c3e50;
+}
+
+.price-change {
+  color: #7f8c8d;
+  font-size: 0.9rem;
+}
+
+.confidence-meter {
+  margin-top: 1rem;
+}
+
+.confidence-meter label {
+  display: block;
+  color: #7f8c8d;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.confidence-bar {
+  background: #ecf0f1;
+  height: 8px;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 0.5rem;
+}
+
+.confidence-fill {
+  height: 100%;
+  background: linear-gradient(to right, #3498db, #2980b9);
+  transition: width 0.3s ease;
+}
+
+/* Technical Indicators */
+.technical-indicators {
+  background: white;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  margin-top: 2rem;
+}
+
+.indicators-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.indicator-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: rgba(52, 152, 219, 0.05);
+  border-radius: 8px;
+}
+
+.indicator-item label {
+  color: #7f8c8d;
+  font-weight: 500;
+}
+
+.indicator-item span {
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.indicator-item span.overbought {
+  color: #e74c3c;
+}
+
+.indicator-item span.oversold {
+  color: #2ecc71;
+}
+
+.indicator-item span.bullish {
+  color: #2ecc71;
+}
+
+.indicator-item span.bearish {
+  color: #e74c3c;
+}
+
+/* Fundamental Analysis */
+.fundamental-summary {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.target-price-card,
+.recommendation-card {
+  flex: 1;
+  background: white;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.target-price-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  text-align: left;
+}
+
+.target-price-card .target-info label {
+  display: block;
+  color: #7f8c8d;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.target-price {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2c3e50;
+}
+
+.recommendation-card {
+  text-align: center;
+}
+
+.recommendation {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+}
+
+.recommendation.strong-buy {
+  background: rgba(46, 204, 113, 0.1);
+  color: #27ae60;
+}
+
+.recommendation.buy {
+  background: rgba(46, 204, 113, 0.05);
+  color: #2ecc71;
+}
+
+.recommendation.hold {
+  background: rgba(243, 156, 18, 0.1);
+  color: #f39c12;
+}
+
+.recommendation.sell {
+  background: rgba(231, 76, 60, 0.05);
+  color: #e74c3c;
+}
+
+.recommendation.strong-sell {
+  background: rgba(231, 76, 60, 0.1);
+  color: #c0392b;
+}
+
+/* Key Factors */
+.key-factors {
+  background: white;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  margin-top: 1rem;
+}
+
+.key-factors h4 {
+  color: #2c3e50;
+  margin-bottom: 1rem;
+}
+
+.key-factors ul {
+  margin: 0;
+  padding-left: 1.5rem;
+}
+
+.key-factors li {
+  margin: 0.75rem 0;
+  color: #34495e;
+  line-height: 1.5;
+}
+
+/* Disclaimer */
+.disclaimer {
+  background: rgba(243, 156, 18, 0.1);
+  border: 1px solid rgba(243, 156, 18, 0.3);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-top: 2rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.disclaimer p {
+  margin: 0;
+  color: #d68910;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+/* Development Notes */
+.development-notes {
+  background: rgba(155, 89, 182, 0.05);
+  border: 1px solid rgba(155, 89, 182, 0.2);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-top: 2rem;
+}
+
+.development-notes h4 {
+  color: #8e44ad;
+  margin: 0 0 1rem 0;
+}
+
+.development-notes ul {
+  margin: 0;
+  padding-left: 1.5rem;
+}
+
+.development-notes li {
+  margin: 0.5rem 0;
+  color: #7d3c98;
+  line-height: 1.5;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .desktop-app {
+    flex-direction: column;
+    height: auto;
+    min-height: 100vh;
+  }
+
+  .sidebar {
+    width: 100%;
+    flex-direction: row;
+    overflow-x: auto;
+  }
+
+  .tab-navigation {
+    display: flex;
+    padding: 0;
+  }
+
+  .tab-item {
+    white-space: nowrap;
+    min-width: 200px;
+  }
+
+  .content-header {
+    padding: 1rem;
+  }
+
+  .content-body {
+    padding: 1rem;
+  }
+
+  .predictions-grid,
+  .fundamental-summary {
+    grid-template-columns: 1fr;
+    flex-direction: column;
+  }
+
+  .metrics-grid,
+  .indicators-grid,
+  .summary-stats {
+    grid-template-columns: 1fr;
+  }
+}
