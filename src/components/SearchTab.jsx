@@ -7,7 +7,19 @@ import {
   BarChart3,
   Activity,
   Eye,
+  Calendar,
 } from "lucide-react";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  Area,
+  AreaChart,
+} from "recharts";
 
 const SearchTab = ({ selectedStock, onStockSelect }) => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -16,6 +28,7 @@ const SearchTab = ({ selectedStock, onStockSelect }) => {
   const [stockData, setStockData] = useState(null);
   const [chartData, setChartData] = useState([]);
   const [showVolatilityButton, setShowVolatilityButton] = useState(false);
+  const [chartPeriod, setChartPeriod] = useState("3M"); // Default to 3 months
 
   const API_BASE = "http://127.0.0.1:8000";
   const debounceRef = useRef(null);
@@ -46,15 +59,31 @@ const SearchTab = ({ selectedStock, onStockSelect }) => {
     }, 300); // wait 300ms after user stops typing
   };
 
-  // Fetch stock + chart data
+  // Fetch stock + chart data with current period
   const handleStockSelection = async (stock) => {
     setLoading(true);
     try {
-      const res = await fetch(`${API_BASE}/stock/${stock.symbol}`);
+      const res = await fetch(
+        `${API_BASE}/stock/${stock.symbol}?period=${chartPeriod}`
+      );
       const data = await res.json();
 
       setStockData(data.stock_data);
-      setChartData(data.chart_data);
+
+      // Format chart data for Recharts with proper date formatting
+      const formattedChartData = data.chart_data.map((item, index) => ({
+        ...item,
+        formattedDate: new Date(item.date).toLocaleDateString("en-US", {
+          month: "short",
+          day: "numeric",
+        }),
+        shortDate: new Date(item.date).toLocaleDateString("en-US", {
+          month: "numeric",
+          day: "numeric",
+        }),
+      }));
+
+      setChartData(formattedChartData);
       setShowVolatilityButton(true);
       setSearchResults([]);
       setSearchQuery(stock.symbol); // show selected symbol in input
@@ -64,6 +93,76 @@ const SearchTab = ({ selectedStock, onStockSelect }) => {
     } finally {
       setLoading(false);
     }
+  };
+
+  // Fetch chart data when period changes
+  const handlePeriodChange = async (newPeriod) => {
+    if (!stockData) return; // No stock selected yet
+
+    setChartPeriod(newPeriod);
+    setLoading(true);
+
+    try {
+      // Fetch new chart data for the selected period
+      const res = await fetch(
+        `${API_BASE}/chart/${stockData.symbol}?period=${newPeriod}`
+      );
+      const data = await res.json();
+
+      // Format chart data for Recharts
+      const formattedChartData = data.chart_data.map((item, index) => ({
+        ...item,
+        formattedDate: new Date(item.date).toLocaleDateString("en-US", {
+          month: "short",
+          day: "numeric",
+        }),
+        shortDate: new Date(item.date).toLocaleDateString("en-US", {
+          month: "numeric",
+          day: "numeric",
+        }),
+      }));
+
+      setChartData(formattedChartData);
+    } catch (err) {
+      console.error("Error fetching chart data:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Custom tooltip component for the chart
+  const CustomTooltip = ({ active, payload, label }) => {
+    if (active && payload && payload.length) {
+      const data = payload[0].payload;
+      return (
+        <div className="recharts-tooltip">
+          <div className="tooltip-header">
+            <p className="tooltip-date">{data.date}</p>
+          </div>
+          <div className="tooltip-content">
+            <p className="tooltip-price">
+              <span className="tooltip-label">Close:</span>
+              <span className="tooltip-value">${data.close.toFixed(2)}</span>
+            </p>
+            <p className="tooltip-range">
+              <span className="tooltip-label">High:</span>
+              <span className="tooltip-value">${data.high.toFixed(2)}</span>
+            </p>
+            <p className="tooltip-range">
+              <span className="tooltip-label">Low:</span>
+              <span className="tooltip-value">${data.low.toFixed(2)}</span>
+            </p>
+            <p className="tooltip-volume">
+              <span className="tooltip-label">Volume:</span>
+              <span className="tooltip-value">
+                {data.volume.toLocaleString()}
+              </span>
+            </p>
+          </div>
+        </div>
+      );
+    }
+    return null;
   };
 
   return (
@@ -198,58 +297,127 @@ const SearchTab = ({ selectedStock, onStockSelect }) => {
             )}
           </div>
 
-          {/* Enhanced Chart Section */}
+          {/* Enhanced Chart Section with Recharts */}
           <div className="chart-section">
             <div className="chart-header">
               <div className="chart-title">
                 <BarChart3 size={24} />
-                <h3>Price Chart (3 Months)</h3>
+                <h3>Price Chart</h3>
               </div>
-              <div className="chart-period">
-                <span>Last 90 days</span>
+
+              {/* Time Period Controls */}
+              <div className="chart-period-controls">
+                <div className="period-buttons">
+                  {["1D", "1W", "1M", "3M", "6M", "1Y"].map((period) => (
+                    <button
+                      key={period}
+                      className={`period-button ${
+                        chartPeriod === period ? "active" : ""
+                      }`}
+                      onClick={() => handlePeriodChange(period)}
+                      disabled={loading}
+                    >
+                      {period}
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
 
             <div className="chart-container">
-              <div className="simple-chart">
-                {chartData.slice(-20).map((point, idx) => {
-                  const maxPrice = Math.max(
-                    ...chartData.slice(-20).map((p) => p.close)
-                  );
-                  const minPrice = Math.min(
-                    ...chartData.slice(-20).map((p) => p.close)
-                  );
-                  const height =
-                    ((point.close - minPrice) / (maxPrice - minPrice)) * 150 +
-                    20;
-
-                  return (
-                    <div
-                      key={idx}
-                      className="chart-bar"
-                      style={{ height: `${height}px` }}
-                      title={`${point.date}: $${point.close.toFixed(2)}`}
+              {chartData.length > 0 ? (
+                <div className="recharts-container">
+                  <ResponsiveContainer width="100%" height={400}>
+                    <AreaChart
+                      data={chartData}
+                      margin={{
+                        top: 20,
+                        right: 30,
+                        left: 20,
+                        bottom: 20,
+                      }}
                     >
-                      <div className="bar-tooltip">
-                        ${point.close.toFixed(2)}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
+                      <defs>
+                        <linearGradient
+                          id="colorClose"
+                          x1="0"
+                          y1="0"
+                          x2="0"
+                          y2="1"
+                        >
+                          <stop
+                            offset="5%"
+                            stopColor="#3498db"
+                            stopOpacity={0.3}
+                          />
+                          <stop
+                            offset="95%"
+                            stopColor="#3498db"
+                            stopOpacity={0.05}
+                          />
+                        </linearGradient>
+                      </defs>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#e8eef5" />
+                      <XAxis
+                        dataKey="shortDate"
+                        axisLine={false}
+                        tickLine={false}
+                        tick={{
+                          fontSize: 12,
+                          fill: "#7f8c8d",
+                        }}
+                      />
+                      <YAxis
+                        axisLine={false}
+                        tickLine={false}
+                        tick={{
+                          fontSize: 12,
+                          fill: "#7f8c8d",
+                        }}
+                        tickFormatter={(value) => `$${value.toFixed(0)}`}
+                      />
+                      <Tooltip content={<CustomTooltip />} />
+                      <Area
+                        type="monotone"
+                        dataKey="close"
+                        stroke="#3498db"
+                        strokeWidth={3}
+                        fill="url(#colorClose)"
+                        dot={false}
+                        activeDot={{
+                          r: 6,
+                          fill: "#3498db",
+                          stroke: "#fff",
+                          strokeWidth: 2,
+                        }}
+                      />
+                    </AreaChart>
+                  </ResponsiveContainer>
+                </div>
+              ) : (
+                <div className="chart-loading">
+                  <BarChart3 size={48} className="loading-icon" />
+                  <p>Loading chart data...</p>
+                </div>
+              )}
 
               <div className="chart-info">
                 <div className="price-range">
-                  <span className="range-label">Range:</span>
+                  <span className="range-label">Period Range:</span>
                   <span className="range-values">
-                    $
-                    {Math.min(
-                      ...chartData.slice(-20).map((p) => p.close)
-                    ).toFixed(2)}{" "}
-                    - $
-                    {Math.max(
-                      ...chartData.slice(-20).map((p) => p.close)
-                    ).toFixed(2)}
+                    {chartData.length > 0 && (
+                      <>
+                        ${Math.min(...chartData.map((p) => p.close)).toFixed(2)}{" "}
+                        - $
+                        {Math.max(...chartData.map((p) => p.close)).toFixed(2)}
+                      </>
+                    )}
+                  </span>
+                </div>
+                <div className="chart-period-info">
+                  <Calendar size={16} />
+                  <span>
+                    {chartPeriod} view • {chartData.length} data points
                   </span>
                 </div>
               </div>
