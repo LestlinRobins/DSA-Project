@@ -30,7 +30,7 @@ const SearchTab = ({ selectedStock, onStockSelect }) => {
   const [showVolatilityButton, setShowVolatilityButton] = useState(false);
   const [chartPeriod, setChartPeriod] = useState("3M"); // Default to 3 months
 
-  const API_BASE = "http://127.0.0.1:8000";
+  const API_BASE = "http://127.0.0.1:8001";
   const debounceRef = useRef(null);
 
   // Autocomplete: fetch search results from backend

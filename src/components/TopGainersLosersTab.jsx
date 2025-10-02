@@ -18,18 +18,41 @@ const TopGainersLosersTab = () => {
     try {
       // Parallel API calls for both gainers and losers data
       const [gainersResponse, losersResponse] = await Promise.all([
-        fetch('http://localhost:8000/api/top-gainers'),
-        fetch('http://localhost:8000/api/top-losers')
+        fetch("http://localhost:8000/api/top-gainers"),
+        fetch("http://localhost:8000/api/top-losers"),
       ]);
+
+      if (!gainersResponse.ok || !losersResponse.ok) {
+        throw new Error(
+          `HTTP error! status: ${
+            gainersResponse.status || losersResponse.status
+          }`
+        );
+      }
 
       const gainers = await gainersResponse.json();
       const losers = await losersResponse.json();
 
+      // Handle error responses from backend
+      if (gainers.error) {
+        console.error("Gainers API error:", gainers.error);
+        throw new Error(gainers.error);
+      }
+      if (losers.error) {
+        console.error("Losers API error:", losers.error);
+        throw new Error(losers.error);
+      }
+
       // Update state with fetched data
-      setGainersLosersData({ gainers, losers });
+      setGainersLosersData({
+        gainers: Array.isArray(gainers) ? gainers : gainers.data || [],
+        losers: Array.isArray(losers) ? losers : losers.data || [],
+      });
     } catch (error) {
       console.error("Error loading gainers/losers data:", error);
-      alert("Failed to load market data. Please try again.");
+      alert(
+        "Failed to load market data. Please try again. Error: " + error.message
+      );
     } finally {
       setLoading(false);
     }
@@ -42,10 +65,12 @@ const TopGainersLosersTab = () => {
       <div className="stock-info">
         <div className="stock-symbol">
           <strong>{stock.symbol}</strong>
-          <span className="company-name">{stock.symbol} Inc.</span>
+          <span className="company-name">{stock.company_name}</span>
         </div>
         <div className="stock-price">
-          <span className="current-price">${stock.current_price.toFixed(2)}</span>
+          <span className="current-price">
+            ${stock.current_price.toFixed(2)}
+          </span>
         </div>
       </div>
 
@@ -54,7 +79,8 @@ const TopGainersLosersTab = () => {
         <div className={`change-value ${isGainer ? "positive" : "negative"}`}>
           {isGainer ? <TrendingUp size={16} /> : <TrendingDown size={16} />}
           <span>
-            ${Math.abs(stock.price_change).toFixed(2)} ({Math.abs(stock.percent_change).toFixed(2)}%)
+            ${Math.abs(stock.price_change).toFixed(2)} (
+            {Math.abs(stock.percent_change).toFixed(2)}%)
           </span>
         </div>
         <div className="volume">Volume: {stock.volume.toLocaleString()}</div>
@@ -66,7 +92,7 @@ const TopGainersLosersTab = () => {
     <div className="gainers-losers-tab">
       {/* Header section with title and refresh button */}
       <div className="tab-header">
-        <h2>🏆 Top Gainers & Losers</h2>
+        <h2>Top Gainers & Losers</h2>
         <p className="tab-description">
           Real-time top performing and declining stocks of the day
         </p>
@@ -84,7 +110,9 @@ const TopGainersLosersTab = () => {
       {/* Toggle buttons to switch between gainers and losers view */}
       <div className="view-toggle">
         <button
-          className={`toggle-button ${activeView === "gainers" ? "active" : ""}`}
+          className={`toggle-button ${
+            activeView === "gainers" ? "active" : ""
+          }`}
           onClick={() => setActiveView("gainers")}
         >
           <TrendingUp size={16} />
@@ -112,7 +140,7 @@ const TopGainersLosersTab = () => {
           {activeView === "gainers" ? (
             // Gainers section
             <div className="gainers-section">
-              <h3>📈 Top Gainers</h3>
+              <h3>Top Gainers</h3>
               <div className="stocks-container">
                 {gainersLosersData.gainers.map((stock, index) => (
                   <div key={index} className="stock-rank-item">
@@ -125,7 +153,7 @@ const TopGainersLosersTab = () => {
           ) : (
             // Losers section
             <div className="losers-section">
-              <h3>📉 Top Losers</h3>
+              <h3>Top Losers</h3>
               <div className="stocks-container">
                 {gainersLosersData.losers.map((stock, index) => (
                   <div key={index} className="stock-rank-item">
