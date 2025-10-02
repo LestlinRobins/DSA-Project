@@ -64,8 +64,8 @@ function App() {
       {/* Left Sidebar with Tabs */}
       <div className="sidebar">
         <div className="app-logo">
-          <h2>📊 Stock Analyzer</h2>
-          <p>Dummy App Structure</p>
+          <h2>Stock Analyzer</h2>
+          <p>Project using data structures and algorithms</p>
         </div>
 
         <nav className="tab-navigation">
