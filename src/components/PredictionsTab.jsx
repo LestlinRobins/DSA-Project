@@ -1,349 +1,166 @@
 import React, { useState, useEffect } from "react";
-import {
-  Brain,
-  TrendingUp,
-  TrendingDown,
-  AlertCircle,
-  Target,
-} from "lucide-react";
+import { Brain, AlertCircle, Info, LineChart } from "lucide-react";
 
 const PredictionsTab = ({ selectedStock }) => {
-  const [predictions, setPredictions] = useState(null);
+  const [forecast, setForecast] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [predictionModel, setPredictionModel] = useState("technical"); // "technical" or "fundamental"
+  const [error, setError] = useState(null);
 
-  // Mock prediction generator
-  const generatePredictions = (stock) => {
-    const currentPrice = 150 + Math.random() * 100; // Mock current price
-    const volatility = Math.random() * 30 + 10; // 10-40% volatility
-
-    return {
-      symbol: stock?.symbol || "DEMO",
-      currentPrice: currentPrice.toFixed(2),
-      predictions: {
-        technical: {
-          shortTerm: {
-            period: "1 Week",
-            predictedPrice: (
-              currentPrice *
-              (1 + (Math.random() - 0.5) * 0.1)
-            ).toFixed(2),
-            confidence: (Math.random() * 30 + 60).toFixed(0), // 60-90%
-            direction: Math.random() > 0.5 ? "up" : "down",
-          },
-          mediumTerm: {
-            period: "1 Month",
-            predictedPrice: (
-              currentPrice *
-              (1 + (Math.random() - 0.5) * 0.2)
-            ).toFixed(2),
-            confidence: (Math.random() * 25 + 55).toFixed(0), // 55-80%
-            direction: Math.random() > 0.5 ? "up" : "down",
-          },
-          longTerm: {
-            period: "3 Months",
-            predictedPrice: (
-              currentPrice *
-              (1 + (Math.random() - 0.5) * 0.3)
-            ).toFixed(2),
-            confidence: (Math.random() * 20 + 40).toFixed(0), // 40-60%
-            direction: Math.random() > 0.5 ? "up" : "down",
-          },
-        },
-        fundamental: {
-          targetPrice: (
-            currentPrice *
-            (1 + (Math.random() - 0.5) * 0.25)
-          ).toFixed(2),
-          recommendation: ["Strong Buy", "Buy", "Hold", "Sell", "Strong Sell"][
-            Math.floor(Math.random() * 5)
-          ],
-          riskLevel: ["Low", "Medium", "High"][Math.floor(Math.random() * 3)],
-          factors: [
-            "Strong earnings growth",
-            "Market expansion opportunities",
-            "Competitive positioning",
-            "Financial health indicators",
-          ],
-        },
-      },
-      indicators: {
-        rsi: (Math.random() * 100).toFixed(0),
-        macd: Math.random() > 0.5 ? "Bullish" : "Bearish",
-        movingAverage: Math.random() > 0.5 ? "Above" : "Below",
-        support: (currentPrice * 0.95).toFixed(2),
-        resistance: (currentPrice * 1.05).toFixed(2),
-      },
-    };
-  };
-
-  // Load predictions when stock changes
   useEffect(() => {
+    console.log("Selected stock changed:", selectedStock);
     if (selectedStock) {
       loadPredictions(selectedStock);
     }
-  }, [selectedStock, predictionModel]);
+    return () => {
+      setForecast(null);
+      setError(null);
+    }
+  }, [selectedStock]);
 
   const loadPredictions = async (stock) => {
     setLoading(true);
+    setError(null);
+    setForecast(null);
     try {
-      // Simulate AI model processing time
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      console.log("Fetching current stock data...");
+      const stockResponse = await fetch(`http://127.0.0.1:8001/stock/${stock.symbol}`);
+      if (!stockResponse.ok) {
+        throw new Error("Failed to fetch current stock data");
+      }
+      const stockData = await stockResponse.json();
+      const basePrice = stockData.stock_data.current_price;
+      console.log("Got stock price:", basePrice);
 
-      const data = generatePredictions(stock);
-      setPredictions(data);
-    } catch (error) {
-      console.error("Error generating predictions:", error);
+      const mockHistory = Array.from({ length: 30 }, (_, i) => {
+        const date = new Date();
+        date.setDate(date.getDate() - (30 - i));
+        return {
+          date: date.toISOString().split('T')[0],
+          close: basePrice + Math.sin(i / 5) * (basePrice * 0.05) + (Math.random() - 0.5) * (basePrice * 0.02),
+        };
+      });
+
+      console.log("Sending prediction request with data:", { mockHistory });
+      const response = await fetch(`http://localhost:8002/predict`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          history: mockHistory,
+          horizon: 30
+        }),
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Prediction request failed:", response.status, errorText);
+        throw new Error(errorText || "Failed to fetch predictions from server.");
+      }
+
+      const data = await response.json();
+      console.log("Prediction response data:", data);
+      setForecast(data);
+      console.log("Forecast state updated");
+
+    } catch (err) {
+      console.error("Error fetching predictions:", err);
+      setError(err.message);
     } finally {
       setLoading(false);
+      console.log("Loading state set to false");
     }
   };
 
-  const PredictionCard = ({ prediction, period }) => (
-    <div className={`prediction-card ${prediction.direction}`}>
-      <div className="prediction-header">
-        <h4>{period}</h4>
-        <div className={`direction-indicator ${prediction.direction}`}>
-          {prediction.direction === "up" ? (
-            <TrendingUp size={16} />
-          ) : (
-            <TrendingDown size={16} />
-          )}
-        </div>
-      </div>
-
-      <div className="prediction-price">
-        <span className="predicted-price">${prediction.predictedPrice}</span>
-        <span className="price-change">
-          {prediction.direction === "up" ? "+" : ""}
-          {(
-            ((prediction.predictedPrice - predictions.currentPrice) /
-              predictions.currentPrice) *
-            100
-          ).toFixed(1)}
-          %
-        </span>
-      </div>
-
-      <div className="confidence-meter">
-        <label>Confidence</label>
-        <div className="confidence-bar">
-          <div
-            className="confidence-fill"
-            style={{ width: `${prediction.confidence}%` }}
-          />
-        </div>
-        <span>{prediction.confidence}%</span>
-      </div>
-    </div>
-  );
-
+  console.log("Rendering PredictionsTab with:", { 
+    loading, 
+    error, 
+    forecast,
+    hasForecast: !!forecast,
+    forecastKeys: forecast ? Object.keys(forecast) : [],
+    predictionsLength: forecast?.predictions?.length
+  });
+  
   return (
     <div className="predictions-tab">
-      <div className="tab-header">
-        <h2>🧠 AI Stock Predictions</h2>
-        <p className="tab-description">
-          Machine learning powered stock price predictions and analysis
+      <div className="predictions-header">
+        <h2>
+          <LineChart size={28} />
+          Data-Driven Stock Forecast
+        </h2>
+        <p>
+          Price estimations based on historical trends, momentum, and volatility.
         </p>
       </div>
 
       {!selectedStock ? (
         <div className="no-stock-message">
-          <Brain size={48} className="icon" />
+          <Brain size={48} />
           <h3>No Stock Selected</h3>
           <p>
-            Please select a stock from the "Search & Charts" tab to see AI
-            predictions.
+            Please select a stock from the main dashboard to view its forecast.
           </p>
-          <div className="instruction-steps">
-            <p>To get predictions:</p>
-            <ol>
-              <li>Go to "Search & Charts" tab</li>
-              <li>Search and select a company</li>
-              <li>Return to this tab to see AI-powered predictions</li>
-            </ol>
-          </div>
         </div>
       ) : (
         <div className="predictions-content">
-          {/* Model Selector */}
-          <div className="model-selector">
-            <label>Prediction Model:</label>
-            <div className="model-buttons">
-              <button
-                className={`model-button ${
-                  predictionModel === "technical" ? "active" : ""
-                }`}
-                onClick={() => setPredictionModel("technical")}
-              >
-                📈 Technical Analysis
-              </button>
-              <button
-                className={`model-button ${
-                  predictionModel === "fundamental" ? "active" : ""
-                }`}
-                onClick={() => setPredictionModel("fundamental")}
-              >
-                📊 Fundamental Analysis
-              </button>
+          {loading && (
+            <div className="loading-spinner-container">
+              <div className="loading-spinner"></div>
+              <p className="loading-text">Analyzing historical data for {selectedStock.symbol}...</p>
             </div>
-          </div>
+          )}
 
-          {loading ? (
-            <div className="loading-state">
-              <div className="spinner"></div>
-              <p>AI is analyzing {selectedStock.symbol}...</p>
-              <p>Processing market data and patterns...</p>
+          {error && (
+            <div className="error-message" role="alert">
+              <p>Error</p>
+              <p>{error}</p>
             </div>
-          ) : predictions ? (
-            <div className="predictions-display">
-              {/* Current Stock Info */}
-              <div className="current-stock-info">
-                <h3>{predictions.symbol}</h3>
-                <div className="current-price">
-                  Current Price: <span>${predictions.currentPrice}</span>
+          )}
+
+          {forecast && !loading && (
+            <div className="prediction-results">
+              <div className="prediction-insight">
+                <Info size={24} />
+                <div className="prediction-insight-content">
+                  <h4>Prediction Insight</h4>
+                  <p>{forecast.explanation || "No explanation available"}</p>
                 </div>
               </div>
 
-              {predictionModel === "technical" ? (
-                <div className="technical-predictions">
-                  <h4>📈 Technical Analysis Predictions</h4>
-                  <div className="predictions-grid">
-                    <PredictionCard
-                      prediction={predictions.predictions.technical.shortTerm}
-                      period="Short Term (1 Week)"
-                    />
-                    <PredictionCard
-                      prediction={predictions.predictions.technical.mediumTerm}
-                      period="Medium Term (1 Month)"
-                    />
-                    <PredictionCard
-                      prediction={predictions.predictions.technical.longTerm}
-                      period="Long Term (3 Months)"
-                    />
-                  </div>
-
-                  {/* Technical Indicators */}
-                  <div className="technical-indicators">
-                    <h4>📊 Technical Indicators</h4>
-                    <div className="indicators-grid">
-                      <div className="indicator-item">
-                        <label>RSI</label>
-                        <span
-                          className={
-                            predictions.indicators.rsi > 70
-                              ? "overbought"
-                              : predictions.indicators.rsi < 30
-                              ? "oversold"
-                              : "neutral"
-                          }
-                        >
-                          {predictions.indicators.rsi}
-                        </span>
-                      </div>
-                      <div className="indicator-item">
-                        <label>MACD</label>
-                        <span
-                          className={
-                            predictions.indicators.macd === "Bullish"
-                              ? "bullish"
-                              : "bearish"
-                          }
-                        >
-                          {predictions.indicators.macd}
-                        </span>
-                      </div>
-                      <div className="indicator-item">
-                        <label>Moving Average</label>
-                        <span>{predictions.indicators.movingAverage} MA50</span>
-                      </div>
-                      <div className="indicator-item">
-                        <label>Support Level</label>
-                        <span>${predictions.indicators.support}</span>
-                      </div>
-                      <div className="indicator-item">
-                        <label>Resistance Level</label>
-                        <span>${predictions.indicators.resistance}</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ) : (
-                <div className="fundamental-predictions">
-                  <h4>📊 Fundamental Analysis</h4>
-
-                  <div className="fundamental-summary">
-                    <div className="target-price-card">
-                      <Target size={24} />
-                      <div className="target-info">
-                        <label>Target Price</label>
-                        <span className="target-price">
-                          ${predictions.predictions.fundamental.targetPrice}
-                        </span>
-                      </div>
-                    </div>
-
-                    <div className="recommendation-card">
-                      <div
-                        className={`recommendation ${predictions.predictions.fundamental.recommendation
-                          .toLowerCase()
-                          .replace(" ", "-")}`}
-                      >
-                        <strong>
-                          {predictions.predictions.fundamental.recommendation}
-                        </strong>
-                      </div>
-                      <div
-                        className={`risk-level ${predictions.predictions.fundamental.riskLevel.toLowerCase()}`}
-                      >
-                        Risk: {predictions.predictions.fundamental.riskLevel}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="key-factors">
-                    <h4>🔑 Key Factors</h4>
-                    <ul>
-                      {predictions.predictions.fundamental.factors.map(
-                        (factor, index) => (
-                          <li key={index}>{factor}</li>
-                        )
+              <div className="forecast-table-container">
+                <h4>30-Day Price Forecast for {selectedStock.symbol}</h4>
+                <div className="overflow-x-auto max-h-96">
+                  <table className="forecast-table">
+                    <thead>
+                      <tr>
+                        <th>Date</th>
+                        <th>Predicted Close Price</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {Array.isArray(forecast.predictions) ? forecast.predictions.map((pred) => (
+                        <tr key={pred.date}>
+                          <td className="date">{pred.date}</td>
+                          <td className="price">${typeof pred.close === 'number' ? pred.close.toFixed(2) : pred.close}</td>
+                        </tr>
+                      )) : (
+                        <tr>
+                          <td colSpan="2">No prediction data available</td>
+                        </tr>
                       )}
-                    </ul>
-                  </div>
+                    </tbody>
+                  </table>
                 </div>
-              )}
-
-              {/* Disclaimer */}
+              </div>
+              
               <div className="disclaimer">
                 <AlertCircle size={16} />
-                <p>
-                  <strong>Disclaimer:</strong> These predictions are for
-                  educational purposes only. Not financial advice. Always do
-                  your own research before making investment decisions.
-                </p>
+                <span>
+                  <strong>Disclaimer:</strong> These forecasts are for educational purposes only and are not financial advice. Always conduct your own research.
+                </span>
               </div>
             </div>
-          ) : null}
+          )}
         </div>
       )}
-
-      {/* Development Notes */}
-      <div className="development-notes">
-        <h4>🛠️ Development Notes</h4>
-        <ul>
-          <li>
-            Integrate real machine learning models (TensorFlow, scikit-learn)
-          </li>
-          <li>Implement LSTM networks for time series prediction</li>
-          <li>Add sentiment analysis from news and social media</li>
-          <li>
-            Include more technical indicators (Bollinger Bands, Stochastic)
-          </li>
-          <li>Add backtesting functionality for prediction accuracy</li>
-          <li>Implement ensemble models combining multiple approaches</li>
-        </ul>
-      </div>
     </div>
   );
 };
