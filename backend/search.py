@@ -139,7 +139,7 @@ def get_chart_data(symbol: str, period: str = "3mo"):
         
         # Map frontend periods to yfinance periods
         period_mapping = {
-            "1D": "1d",
+            "1D": "1d", 
             "1W": "5d", 
             "1M": "1mo",
             "3M": "3mo",

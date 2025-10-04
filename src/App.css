@@ -1788,3 +1788,416 @@ body {
     justify-content: center;
   }
 }
+
+/* Enhanced Volatility Tab Styles */
+.volatility-tab {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.error-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  background: #fef2f2;
+  border: 2px solid #fecaca;
+  border-radius: 1rem;
+  padding: 3rem;
+  text-align: center;
+}
+
+.retry-button {
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.retry-button:hover {
+  background: #dc2626;
+}
+
+.main-volatility-card {
+  background: white;
+  border-radius: 1rem;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
+}
+
+.stock-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+}
+
+.stock-info h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 0.5rem;
+}
+
+.stock-symbol {
+  background: #f3f4f6;
+  padding: 0.25rem 0.75rem;
+  border-radius: 0.375rem;
+  font-weight: 600;
+  color: #6b7280;
+  margin-right: 1rem;
+}
+
+.current-price {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #059669;
+}
+
+.volatility-badge {
+  text-align: center;
+}
+
+.volatility-percentage {
+  display: block;
+  font-size: 3rem;
+  font-weight: 800;
+  color: #3b82f6;
+  line-height: 1;
+}
+
+.volatility-label {
+  color: #6b7280;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.risk-indicator {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.risk-badge {
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  color: white;
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.risk-low { background: #22c55e; }
+.risk-medium { background: #f59e0b; }
+.risk-high { background: #ef4444; }
+
+.data-info {
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.metric-card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.metric-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px -8px rgba(0, 0, 0, 0.15);
+}
+
+.metric-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.metric-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #111827;
+}
+
+.metric-label {
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+.volatility-chart-section {
+  background: white;
+  border-radius: 1rem;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
+}
+
+.chart-container {
+  margin-top: 1rem;
+}
+
+.volatility-chart {
+  height: 300px;
+  position: relative;
+  padding: 1rem 0;
+}
+
+.chart-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.5rem;
+  height: 100%;
+  justify-content: center;
+}
+
+.chart-bar-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  min-width: 40px;
+}
+
+.chart-bar {
+  width: 100%;
+  max-width: 30px;
+  border-radius: 0.25rem 0.25rem 0 0;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.chart-bar:hover {
+  opacity: 0.8;
+  transform: scale(1.05);
+}
+
+.bar-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #374151;
+  margin-top: 0.25rem;
+}
+
+.date-label {
+  font-size: 0.625rem;
+  color: #9ca3af;
+  margin-top: 0.25rem;
+  transform: rotate(-45deg);
+  white-space: nowrap;
+}
+
+.no-chart-data {
+  text-align: center;
+  padding: 2rem;
+  color: #6b7280;
+}
+
+.volatility-rankings {
+  background: white;
+  border-radius: 1rem;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
+}
+
+.rankings-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-top: 1rem;
+}
+
+.ranking-section h4 {
+  color: #374151;
+  margin-bottom: 1rem;
+  font-size: 1.125rem;
+}
+
+.ranking-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.ranking-item {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 1rem;
+  align-items: center;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid #e5e7eb;
+  transition: all 0.2s;
+}
+
+.ranking-item:hover {
+  transform: translateX(4px);
+  box-shadow: 0 4px 12px -4px rgba(0, 0, 0, 0.15);
+}
+
+.ranking-item.high-volatility {
+  background: linear-gradient(90deg, #fef2f2 0%, #fefefe 100%);
+  border-color: #fecaca;
+}
+
+.ranking-item.low-volatility {
+  background: linear-gradient(90deg, #f0fdf4 0%, #fefefe 100%);
+  border-color: #bbf7d0;
+}
+
+.ranking-item .rank {
+  font-weight: 700;
+  color: #6b7280;
+  font-size: 1rem;
+}
+
+.stock-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.stock-details .symbol {
+  font-weight: 600;
+  color: #111827;
+}
+
+.stock-details .company {
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.volatility-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.volatility-value {
+  font-weight: 700;
+  color: #3b82f6;
+}
+
+.risk-tag {
+  font-size: 0.75rem;
+  padding: 0.125rem 0.5rem;
+  border-radius: 0.25rem;
+  color: white;
+  font-weight: 600;
+  margin-top: 0.25rem;
+}
+
+.rankings-loading {
+  text-align: center;
+  padding: 2rem;
+  color: #6b7280;
+}
+
+.volatility-education {
+  background: white;
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
+}
+
+.education-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.education-card {
+  background: #f9fafb;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  border: 1px solid #f3f4f6;
+}
+
+.education-card h4 {
+  color: #111827;
+  margin-bottom: 0.75rem;
+  font-size: 1.125rem;
+}
+
+.education-card p {
+  color: #6b7280;
+  line-height: 1.6;
+}
+
+.risk-levels {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.risk-example {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.risk-example span:last-child {
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .volatility-tab {
+    padding: 1rem;
+  }
+  
+  .stock-header {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+  
+  .rankings-container {
+    grid-template-columns: 1fr;
+  }
+  
+  .chart-bars {
+    gap: 0.25rem;
+  }
+  
+  .chart-bar-container {
+    min-width: 25px;
+  }
+  
+  .education-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .ranking-item {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 0.5rem;
+  }
+  
+  .volatility-info {
+    align-items: center;
+  }
+}
