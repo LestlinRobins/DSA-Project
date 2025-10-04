@@ -1393,6 +1393,79 @@
   margin: 0;
 }
 
+/* Predictions Chart Section */
+.predictions-chart-section {
+  background: white;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+}
+
+.predictions-chart-section h4 {
+  color: #2c3e50;
+  font-size: 1.5rem;
+  margin: 0 0 1.5rem 0;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.predictions-chart-section .chart-container {
+  min-height: 400px;
+  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.prediction-tooltip {
+  background: rgba(255, 255, 255, 0.98) !important;
+  border: none !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15) !important;
+  padding: 1rem !important;
+  min-width: 200px;
+}
+
+.prediction-tooltip .tooltip-header {
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.prediction-tooltip .tooltip-date {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #334155;
+  margin: 0;
+}
+
+.prediction-tooltip .tooltip-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.prediction-tooltip .tooltip-price {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0;
+}
+
+.prediction-tooltip .tooltip-label {
+  font-size: 0.85rem;
+  color: #64748b;
+  margin-right: 1rem;
+}
+
+.prediction-tooltip .tooltip-value {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #10b981;
+  font-family: monospace;
+}
+
 .forecast-table-container {
   background: white;
   padding: 2rem;
@@ -1852,5 +1925,709 @@
   .indicators-grid,
   .summary-stats {
     grid-template-columns: 1fr;
+  }
+}
+/* Volatility Tab - Modern Styling */
+.volatility-tab {
+  padding: 2rem;
+  height: 100%;
+  overflow-y: auto;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+.volatility-tab h2 {
+  color: #2c3e50;
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+  text-align: center;
+}
+
+.volatility-tab .tab-description {
+  color: #7f8c8d;
+  font-size: 1.1rem;
+  margin: 0 0 2rem 0;
+  text-align: center;
+  opacity: 0.9;
+}
+
+/* No Symbol Message */
+.no-symbol-message {
+  background: white;
+  padding: 4rem 2rem;
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  margin: 2rem auto;
+}
+
+.no-symbol-message .icon {
+  color: #bdc3c7;
+  margin-bottom: 1.5rem;
+}
+
+.no-symbol-message h3 {
+  color: #2c3e50;
+  font-size: 1.8rem;
+  margin: 1rem 0;
+  font-weight: 600;
+}
+
+.no-symbol-message p {
+  color: #7f8c8d;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin: 1rem 0;
+}
+
+.instruction-steps {
+  background: linear-gradient(
+    135deg,
+    rgba(52, 152, 219, 0.05) 0%,
+    rgba(52, 152, 219, 0.1) 100%
+  );
+  padding: 1.5rem;
+  border-radius: 12px;
+  margin-top: 1.5rem;
+  text-align: left;
+  border: 1px solid rgba(52, 152, 219, 0.2);
+}
+
+.instruction-steps p {
+  margin: 0 0 0.75rem 0;
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+.instruction-steps ol {
+  margin: 0;
+  padding-left: 1.5rem;
+}
+
+.instruction-steps li {
+  margin: 0.75rem 0;
+  color: #34495e;
+  line-height: 1.5;
+  font-size: 1rem;
+}
+
+/* Volatility Content */
+.volatility-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* Time Range Selector */
+.time-range-selector {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.time-range-selector label {
+  color: #2c3e50;
+  font-weight: 600;
+  font-size: 1rem;
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.range-buttons {
+  display: flex;
+  gap: 0.5rem;
+  background: #f8f9fa;
+  padding: 0.3rem;
+  border-radius: 12px;
+  border: 1px solid #e9ecef;
+}
+
+.range-button {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border: none;
+  background: transparent;
+  color: #7f8c8d;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.range-button:hover {
+  background: rgba(52, 152, 219, 0.1);
+  color: #3498db;
+}
+
+.range-button.active {
+  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+  color: white;
+  box-shadow: 0 2px 8px rgba(52, 152, 219, 0.3);
+}
+
+/* Loading State */
+.loading-state {
+  background: white;
+  padding: 4rem 2rem;
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.loading-state .spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid #e5e7eb;
+  border-top: 4px solid #3498db;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 1.5rem;
+}
+
+.loading-state p {
+  color: #2c3e50;
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+/* Error Display */
+.error-display {
+  background: white;
+  padding: 3rem 2rem;
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  border: 2px solid #fee2e2;
+}
+
+.error-display h3 {
+  color: #2c3e50;
+  font-size: 1.8rem;
+  margin: 1rem 0;
+  font-weight: 600;
+}
+
+.error-display p {
+  color: #7f8c8d;
+  font-size: 1.1rem;
+  margin: 1rem 0;
+}
+
+.retry-button {
+  margin-top: 1.5rem;
+  padding: 0.75rem 2rem;
+  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.retry-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(52, 152, 219, 0.3);
+}
+
+/* Volatility Display Container */
+.volatility-display {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* Main Volatility Card */
+.main-volatility-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 2.5rem;
+  border-radius: 20px;
+  box-shadow: 0 15px 35px rgba(102, 126, 234, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.main-volatility-card::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.1) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+}
+
+.main-volatility-card .stock-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.main-volatility-card .stock-info h2 {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+  color: white;
+  text-align: left;
+}
+
+.main-volatility-card .stock-symbol {
+  display: block;
+  font-size: 1.2rem;
+  opacity: 0.9;
+  margin-top: 0.5rem;
+  font-weight: 500;
+}
+
+.main-volatility-card .current-price {
+  display: block;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-top: 1rem;
+  letter-spacing: -0.5px;
+}
+
+.volatility-badge {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 1.5rem;
+  border-radius: 16px;
+  text-align: center;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  min-width: 180px;
+}
+
+.volatility-percentage {
+  display: block;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.volatility-label {
+  display: block;
+  font-size: 0.9rem;
+  opacity: 0.9;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.risk-indicator {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.risk-badge {
+  padding: 0.75rem 1.5rem;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: white;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(10px);
+}
+
+.risk-badge.risk-high {
+  background: rgba(239, 68, 68, 0.9);
+}
+
+.risk-badge.risk-medium {
+  background: rgba(245, 158, 11, 0.9);
+}
+
+.risk-badge.risk-low {
+  background: rgba(34, 197, 94, 0.9);
+}
+
+.data-info {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.9rem;
+}
+
+/* Volatility Metrics Grid */
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+}
+
+.metric-card {
+  background: white;
+  padding: 1.8rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.metric-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+  border-color: rgba(52, 152, 219, 0.2);
+}
+
+.metric-card svg {
+  flex-shrink: 0;
+}
+
+.metric-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.metric-value {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #2c3e50;
+  line-height: 1;
+}
+
+.metric-label {
+  font-size: 0.9rem;
+  color: #7f8c8d;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+/* Volatility Chart Section */
+.volatility-chart-section {
+  background: white;
+  padding: 2rem;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+.volatility-chart-section h3 {
+  color: #2c3e50;
+  font-size: 1.6rem;
+  font-weight: 600;
+  margin: 0 0 1.5rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.chart-container {
+  min-height: 350px;
+  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.volatility-chart {
+  height: 100%;
+}
+
+.chart-bars {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  height: 300px;
+  gap: 0.5rem;
+  padding: 1rem 0;
+}
+
+.chart-bar-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: 30px;
+}
+
+.chart-bar {
+  width: 100%;
+  border-radius: 6px 6px 0 0;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.chart-bar:hover {
+  transform: scaleY(1.05);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.bar-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-top: 0.5rem;
+}
+
+.date-label {
+  font-size: 0.7rem;
+  color: #7f8c8d;
+  margin-top: 0.25rem;
+  transform: rotate(-45deg);
+  white-space: nowrap;
+}
+
+.no-chart-data {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 300px;
+  color: #7f8c8d;
+  font-size: 1.1rem;
+}
+
+/* Volatility Rankings */
+.volatility-rankings {
+  background: white;
+  padding: 2rem;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+.volatility-rankings h3 {
+  color: #2c3e50;
+  font-size: 1.6rem;
+  font-weight: 600;
+  margin: 0 0 1.5rem 0;
+}
+
+.rankings-loading {
+  text-align: center;
+  padding: 2rem;
+  color: #7f8c8d;
+  font-size: 1.1rem;
+}
+
+.rankings-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 2rem;
+}
+
+.ranking-section h4 {
+  color: #2c3e50;
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin: 0 0 1rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.ranking-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.ranking-item {
+  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+  padding: 1.5rem;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.ranking-item:hover {
+  transform: translateX(8px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.ranking-item.high-volatility:hover {
+  border-color: rgba(239, 68, 68, 0.3);
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.05) 0%, #ffffff 100%);
+}
+
+.ranking-item.low-volatility:hover {
+  border-color: rgba(34, 197, 94, 0.3);
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.05) 0%, #ffffff 100%);
+}
+
+.ranking-item .rank {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #3498db;
+  min-width: 50px;
+  text-align: center;
+}
+
+.stock-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.stock-details .symbol {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #2c3e50;
+}
+
+.stock-details .company {
+  font-size: 0.9rem;
+  color: #7f8c8d;
+}
+
+.volatility-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
+}
+
+.volatility-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #2c3e50;
+}
+
+.risk-tag {
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: white;
+}
+
+.risk-tag.risk-high {
+  background: #ef4444;
+}
+
+.risk-tag.risk-medium {
+  background: #f59e0b;
+}
+
+.risk-tag.risk-low {
+  background: #22c55e;
+}
+
+/* Volatility Education */
+.volatility-education {
+  background: white;
+  padding: 2.5rem;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  margin-top: 2rem;
+}
+
+.volatility-education h3 {
+  color: #2c3e50;
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin: 0 0 2rem 0;
+  text-align: center;
+}
+
+.education-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.education-card {
+  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+  padding: 2rem;
+  border-radius: 16px;
+  border: 2px solid #e9ecef;
+  transition: all 0.3s ease;
+}
+
+.education-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  border-color: rgba(52, 152, 219, 0.3);
+}
+
+.education-card h4 {
+  color: #3498db;
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin: 0 0 1rem 0;
+}
+
+.education-card p {
+  color: #34495e;
+  font-size: 1rem;
+  line-height: 1.7;
+  margin: 0;
+}
+
+.risk-levels {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.risk-example {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem;
+  background: white;
+  border-radius: 8px;
+}
+
+.risk-example span:first-child {
+  min-width: 100px;
+}
+
+.risk-example span:last-child {
+  color: #34495e;
+  font-size: 0.95rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .volatility-tab {
+    padding: 1rem;
+  }
+
+  .main-volatility-card .stock-header {
+    flex-direction: column;
+  }
+
+  .metrics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .rankings-container {
+    grid-template-columns: 1fr;
+  }
+
+  .education-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .chart-bars {
+    gap: 0.25rem;
+  }
+
+  .date-label {
+    font-size: 0.6rem;
   }
 }
