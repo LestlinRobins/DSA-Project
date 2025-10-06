@@ -6,6 +6,11 @@ import {
   AlertTriangle,
   BarChart3,
   Target,
+  BarChart2,
+  Trophy,
+  LineChart as LineChartIcon,
+  Flame,
+  Shield,
 } from "lucide-react";
 import {
   LineChart,
@@ -135,7 +140,10 @@ const VolatilityTab = ({ searchedSymbol, selectedStock }) => {
 
   return (
     <div className="volatility-tab">
-      <h2>📊 Volatility Analysis</h2>
+      <h2>
+        <BarChart2 size={28} />
+        Volatility Analysis
+      </h2>
       <p className="tab-description">
         Analyze historical volatility patterns and risk metrics
       </p>
@@ -278,7 +286,10 @@ const VolatilityTab = ({ searchedSymbol, selectedStock }) => {
 
               {/* Volatility Chart */}
               <div className="volatility-chart-section">
-                <h3>📈 Rolling Volatility Chart ({timeRange})</h3>
+                <h3>
+                  <LineChartIcon size={20} />
+                  Rolling Volatility Chart ({timeRange})
+                </h3>
                 <div className="chart-container">
                   {volatilityData.data_points?.length > 0 ? (
                     <ResponsiveContainer width="100%" height={400}>
@@ -346,13 +357,19 @@ const VolatilityTab = ({ searchedSymbol, selectedStock }) => {
 
               {/* Market Volatility Rankings */}
               <div className="volatility-rankings">
-                <h3>🏆 Market Volatility Rankings ({timeRange})</h3>
+                <h3>
+                  <Trophy size={20} />
+                  Market Volatility Rankings ({timeRange})
+                </h3>
                 {loadingRankings ? (
                   <div className="rankings-loading">Loading rankings...</div>
                 ) : rankingData ? (
                   <div className="rankings-container">
                     <div className="ranking-section">
-                      <h4>🔥 Most Volatile</h4>
+                      <h4>
+                        <Flame size={18} />
+                        Most Volatile
+                      </h4>
                       <div className="ranking-list">
                         {rankingData.most_volatile.map((stock, index) => (
                           <div
@@ -382,7 +399,10 @@ const VolatilityTab = ({ searchedSymbol, selectedStock }) => {
                     </div>
 
                     <div className="ranking-section">
-                      <h4>🛡️ Most Stable</h4>
+                      <h4>
+                        <Shield size={18} />
+                        Most Stable
+                      </h4>
                       <div className="ranking-list">
                         {rankingData.least_volatile.map((stock, index) => (
                           <div

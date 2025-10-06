@@ -412,49 +412,49 @@ class StockPredictor:
         
         # RSI Analysis
         if rsi < 30:
-            analysis.append(f"📉 Stock is oversold (RSI: {rsi:.1f}). This often signals a potential buying opportunity as selling pressure may be exhausted.")
+            analysis.append(f"Stock is oversold (RSI: {rsi:.1f}). This often signals a potential buying opportunity as selling pressure may be exhausted.")
         elif rsi > 70:
-            analysis.append(f"📈 Stock is overbought (RSI: {rsi:.1f}). This suggests the stock may be due for a price correction or consolidation.")
+            analysis.append(f"Stock is overbought (RSI: {rsi:.1f}). This suggests the stock may be due for a price correction or consolidation.")
         else:
-            analysis.append(f"⚖️ RSI at {rsi:.1f} indicates neutral territory. The stock is neither overbought nor oversold.")
-        
+            analysis.append(f"RSI at {rsi:.1f} indicates neutral territory. The stock is neither overbought nor oversold.")
+
         # Trend Analysis
         if trend_score >= 3:
-            analysis.append("🚀 Strong bullish trend confirmed across multiple moving averages. Momentum is on the upside.")
+            analysis.append("Strong bullish trend confirmed across multiple moving averages. Momentum is on the upside.")
         elif trend_score <= -3:
-            analysis.append("📉 Strong bearish trend detected. Multiple moving averages suggest downward momentum.")
+            analysis.append("Strong bearish trend detected. Multiple moving averages suggest downward momentum.")
         elif trend_score > 0:
-            analysis.append("↗️ Mild bullish bias detected, but trend is not strongly confirmed.")
+            analysis.append("Mild bullish bias detected, but trend is not strongly confirmed.")
         elif trend_score < 0:
-            analysis.append("↘️ Mild bearish bias detected, but trend is not strongly confirmed.")
+            analysis.append("Mild bearish bias detected, but trend is not strongly confirmed.")
         else:
-            analysis.append("↔️ Stock is in consolidation. No clear directional trend in moving averages.")
-        
+            analysis.append("Stock is in consolidation. No clear directional trend in moving averages.")
+
         # Momentum Analysis
         if momentum > 5:
-            analysis.append(f"⚡ Strong positive momentum ({momentum:.1f}%) suggests continued upward price action in the near term.")
+            analysis.append(f"Strong positive momentum ({momentum:.1f}%) suggests continued upward price action in the near term.")
         elif momentum < -5:
-            analysis.append(f"⚡ Strong negative momentum ({momentum:.1f}%) indicates bearish pressure and potential further decline.")
+            analysis.append(f"Strong negative momentum ({momentum:.1f}%) indicates bearish pressure and potential further decline.")
         elif abs(momentum) < 2:
-            analysis.append("😴 Low momentum suggests the stock is range-bound or consolidating.")
-        
+            analysis.append("Low momentum suggests the stock is range-bound or consolidating.")
+
         # Volume Analysis
         if volume_trend > 30:
-            analysis.append("📊 Significantly higher trading volume confirms strong market interest and validates current price movement.")
+            analysis.append("Significantly higher trading volume confirms strong market interest and validates current price movement.")
         elif volume_trend < -30:
-            analysis.append("📊 Lower trading volume suggests weak conviction in the current trend. Be cautious of potential reversals.")
+            analysis.append("Lower trading volume suggests weak conviction in the current trend. Be cautious of potential reversals.")
         
         # Volatility Warning
         if volatility > 5:
-            analysis.append(f"⚠️ High volatility ({volatility:.1f}%) detected. Expect larger price swings and increased risk.")
+            analysis.append(f"High volatility ({volatility:.1f}%) detected. Expect larger price swings and increased risk.")
         elif volatility < 1.5:
-            analysis.append("😌 Low volatility indicates stable, predictable price action with reduced risk.")
-        
+            analysis.append("Low volatility indicates stable, predictable price action with reduced risk.")
+
         # MACD insight
         if macd_histogram > 0.5:
-            analysis.append("📈 MACD shows bullish momentum building. The trend is strengthening to the upside.")
+            analysis.append("MACD shows bullish momentum building. The trend is strengthening to the upside.")
         elif macd_histogram < -0.5:
-            analysis.append("📉 MACD shows bearish momentum. Selling pressure is increasing.")
+            analysis.append("MACD shows bearish momentum. Selling pressure is increasing.")
         
         return analysis
 

@@ -18,8 +18,8 @@ const TopGainersLosersTab = () => {
     try {
       // Parallel API calls for both gainers and losers data
       const [gainersResponse, losersResponse] = await Promise.all([
-        fetch("http://localhost:8002/api/top-gainers"),
-        fetch("http://localhost:8002/api/top-losers"),
+        fetch("http://localhost:8000/api/top-gainers"),
+        fetch("http://localhost:8000/api/top-losers"),
       ]);
 
       if (!gainersResponse.ok || !losersResponse.ok) {
