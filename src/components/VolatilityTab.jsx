@@ -26,7 +26,7 @@ const VolatilityTab = ({ searchedSymbol, selectedStock }) => {
     setError(null);
     try {
       const response = await fetch(
-        `http://localhost:8001/api/volatility/${symbol}?time_range=${range}`
+        `http://localhost:8003/api/volatility/${symbol}?time_range=${range}`
       );
       
       if (!response.ok) {
@@ -47,7 +47,7 @@ const VolatilityTab = ({ searchedSymbol, selectedStock }) => {
     setLoadingRankings(true);
     try {
       const response = await fetch(
-        `http://localhost:8001/api/volatility-ranking?time_range=${timeRange}&limit=5`
+        `http://localhost:8003/api/volatility-ranking?time_range=${timeRange}&limit=5`
       );
       if (response.ok) {
         const data = await response.json();
