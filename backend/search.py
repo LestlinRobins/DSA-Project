@@ -8,9 +8,62 @@ app = FastAPI()
 
 # This search API allows users to search for companies and get live stock data with timeframe support.
 # To do this, we employ different data structures for efficiency:
-# 1. Hash Map (Dictionary) for company symbol to name mapping for O(1) lookups.
-# 2. Hash Map is also used in the response to store stock data for quick access.
-# 3. Lists for storing chart data points, which are efficient for iteration and appending.
+# 1. Trie (Prefix Tree) for efficient prefix-based search with O(m) lookup where m is the query length.
+# 2. Hash Map (Dictionary) for company symbol to name mapping for O(1) lookups.
+# 3. Hash Map is also used in the response to store stock data for quick access.
+# 4. Lists for storing chart data points, which are efficient for iteration and appending.
+
+class TrieNode:
+    def __init__(self):
+        self.children = {}
+        self.is_end_of_word = False
+        self.data = None  # Stores (symbol, company_name) tuple
+
+class Trie:
+    def __init__(self):
+        self.root = TrieNode()
+    
+    def insert(self, word, symbol, company_name):
+        """Insert a word (symbol or company name) into the Trie"""
+        node = self.root
+        word = word.lower()
+        
+        for char in word:
+            if char not in node.children:
+                node.children[char] = TrieNode()
+            node = node.children[char]
+        
+        node.is_end_of_word = True
+        node.data = (symbol, company_name)
+    
+    def search_prefix(self, prefix):
+        """Search for all words with the given prefix"""
+        results = []
+        node = self.root
+        prefix = prefix.lower()
+        
+        # Navigate to the prefix node
+        for char in prefix:
+            if char not in node.children:
+                return results
+            node = node.children[char]
+        
+        # Collect all words with this prefix
+        self._collect_all_words(node, results)
+        return results
+    
+    def _collect_all_words(self, node, results):
+        """Helper method to collect all words from a given node"""
+        if node.is_end_of_word and node.data:
+            symbol, company_name = node.data
+            if (symbol, company_name) not in [(r["symbol"], r["company"]) for r in results]:
+                results.append({
+                    "symbol": symbol,
+                    "company": company_name
+                })
+        
+        for child in node.children.values():
+            self._collect_all_words(child, results)
 
 # Allow React frontend to access FastAPI
 app.add_middleware(
@@ -48,6 +101,13 @@ companies = {
     "MARUTI.NS": "Maruti Suzuki India Limited",
     "HCLTECH.NS": "HCL Technologies Limited",
 }
+
+# Initialize Trie and populate it with company data
+company_trie = Trie()
+for symbol, company_name in companies.items():
+    # Insert both symbol and company name into the Trie for searchability
+    company_trie.insert(symbol, symbol, company_name)
+    company_trie.insert(company_name, symbol, company_name)
 
 # Format numbers for display
 def format_number(value):
@@ -187,17 +247,10 @@ def get_chart_data(symbol: str, period: str = "3mo"):
 # API Endpoints
 
 @app.get("/search")
+# Search for companies using Trie data structure for efficient prefix matching.
+# Time Complexity: O(m + n) where m is query length and n is number of matching results.
 def search_companies(query: str):
-    query = query.lower()
-    results = []
-    
-    for symbol, name in companies.items():
-        if query in symbol.lower() or query in name.lower():
-            results.append({
-                "symbol": symbol,
-                "company": name
-            })
-    
+    results = company_trie.search_prefix(query)
     return results[:10]  # Limit to 10 results
 
 @app.get("/stock/{symbol}")

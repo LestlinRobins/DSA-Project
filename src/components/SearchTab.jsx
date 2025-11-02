@@ -37,7 +37,7 @@ const SearchTab = ({ selectedStock, onStockSelect }) => {
   const handleSearch = (query) => {
     setSearchQuery(query);
 
-    if (query.length < 2) {
+    if (query.length < 1) {
       setSearchResults([]);
       return;
     }
@@ -170,7 +170,7 @@ const SearchTab = ({ selectedStock, onStockSelect }) => {
       {/* Enhanced Search Header */}
       <div className="search-header">
         <h2>Stock Search & Analysis</h2>
-        <p>Find and analyze your favorite stocks with real-time data</p>
+        <p>Find and analyze stocks with real-time data</p>
       </div>
 
       {/* Enhanced Search Input */}
